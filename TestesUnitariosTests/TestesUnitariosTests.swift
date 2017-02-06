@@ -28,7 +28,21 @@ class TestesUnitariosTests: XCTestCase {
     
     func testPerformanceExample() {
         self.measure {
-            let result = ViewController.sum(1, 2);
+            _ = ViewController.sum(1, 2);
+        }
+    }
+    
+    func testSumAsync() {
+        let asyncExpectation = self.expectation(description: "sum");
+        
+        ViewController.sumAsync(1, 2, completionHandler: { result in
+            asyncExpectation.fulfill();
+            
+            XCTAssert(result == 3);
+        });
+        
+        self.waitForExpectations(timeout: 5) { error in
+            XCTAssertNil(error, "Algo deu errado depois de 5 segundos");
         }
     }
     
